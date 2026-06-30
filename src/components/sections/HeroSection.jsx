@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 
 export default function HeroSection() {
@@ -148,7 +150,7 @@ export default function HeroSection() {
           </a>
 
           <Link
-            to="/teams"
+            href="/teams"
             className="bg-black text-white px-5 py-2.5 text-xs font-mono uppercase tracking-widest hover:bg-neutral-900 transition-colors duration-300 rounded-none"
           >
             Teams

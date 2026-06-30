@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+"use client";
+
+import Link from 'next/link';
 
 const PROJECTS = [
   {
@@ -146,7 +148,7 @@ export default function PortfolioSection() {
         </div>
 
         <Link
-          to="/portfolio"
+          href="/portfolio"
           className="group font-mono text-zinc-500 hover:text-white transition-colors duration-200 hidden md:flex items-center gap-2"
           style={{ letterSpacing: '0.1em', fontSize: '11px' }}
         >
@@ -166,7 +168,7 @@ export default function PortfolioSection() {
       {/* Mobile: view more */}
       <div className="md:hidden px-8 pb-10">
         <Link
-          to="/portfolio"
+          href="/portfolio"
           className="font-mono text-zinc-500 hover:text-white text-xs tracking-widest uppercase transition-colors"
           style={{ fontSize: '11px' }}
         >

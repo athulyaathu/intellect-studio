@@ -1,9 +1,13 @@
+"use client";
+
 import { useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const CTA     = 'READY TO BUILD SOMETHING REAL?';
 const CHAR_MS = 55;
