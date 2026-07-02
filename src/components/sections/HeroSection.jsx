@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
+import Navbar from '../layout/Navbar';
 
 export default function HeroSection() {
   const sectionRef  = useRef(null);
@@ -71,25 +72,7 @@ export default function HeroSection() {
       />
 
       {/* Navbar */}
-      <nav
-        ref={navRef}
-        className="relative z-10 flex items-center justify-between px-8 md:px-12 pt-7 pb-5"
-      >
-        <span
-          className="font-sans font-bold text-black tracking-widest uppercase text-sm"
-          style={{ letterSpacing: '0.2em' }}
-        >
-          INTELLECT STUDIO
-        </span>
-        <a
-          ref={addMagneticRef}
-          href="#apply"
-          className="magnetic-btn font-sans font-bold text-white bg-black px-6 py-2.5 text-sm tracking-wider uppercase hover:bg-zinc-800 transition-colors"
-          style={{ letterSpacing: '0.08em' }}
-        >
-          Apply Now →
-        </a>
-      </nav>
+      <Navbar />
 
       {/* Hero Content */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-12">
