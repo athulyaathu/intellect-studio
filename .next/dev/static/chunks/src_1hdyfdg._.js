@@ -728,7 +728,6 @@ var _s = __turbopack_context__.k.signature();
 function HeroSection() {
     _s();
     const sectionRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const navRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const heroTextRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const studioTextRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const subtitleRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
@@ -797,166 +796,166 @@ function HeroSection() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         ref: sectionRef,
         id: "hero",
-        className: "relative w-full h-screen overflow-hidden bg-white flex flex-col",
+        className: "relative w-full h-screen overflow-hidden bg-white flex flex-col justify-between",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute inset-0 pointer-events-none",
                 style: {
-                    background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(0,0,0,0.03) 0%, transparent 70%)',
+                    background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(0,0,0,0.02) 0%, transparent 75%)',
                     zIndex: 0
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                lineNumber: 66,
+                lineNumber: 65,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layout$2f$Navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                lineNumber: 75,
+                lineNumber: 74,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative z-10 flex-1 flex flex-col justify-center px-8 md:px-12",
+                className: "relative z-10 flex-1 flex flex-col justify-center px-6 md:px-16 lg:px-24 max-w-5xl mt-16",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         ref: heroTextRef,
+                        className: "space-y-0.5",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                className: "font-sans font-black text-black leading-none tracking-tight select-none",
+                                className: "font-sans font-black text-black leading-none tracking-tighter select-none",
                                 style: {
-                                    fontSize: 'clamp(5rem, 16vw, 16rem)',
-                                    letterSpacing: '-0.03em',
-                                    lineHeight: 0.9
+                                    fontSize: 'clamp(4rem, 13vw, 13rem)',
+                                    lineHeight: 0.85
                                 },
                                 children: "INTELLECT"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 80,
+                                lineNumber: 79,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                 ref: studioTextRef,
-                                className: "font-sans font-black leading-none tracking-tight select-none",
+                                className: "font-sans font-black leading-none tracking-tighter select-none",
                                 style: {
-                                    fontSize: 'clamp(5rem, 16vw, 16rem)',
-                                    letterSpacing: '-0.03em',
-                                    lineHeight: 0.9,
-                                    color: '#9CA3AF'
+                                    fontSize: 'clamp(4rem, 13vw, 13rem)',
+                                    lineHeight: 0.85,
+                                    color: '#A3A3A3'
                                 },
                                 children: "STUDIO"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 86,
+                                lineNumber: 85,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/sections/HeroSection.jsx",
-                        lineNumber: 79,
+                        lineNumber: 78,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         ref: subtitleRef,
-                        className: "font-sans text-zinc-500 mt-8 max-w-sm text-base leading-relaxed",
-                        children: "Welcome here. We design, build, and launch digital experiences that define tomorrow."
+                        className: "font-sans text-neutral-500 mt-6 md:mt-8 max-w-md text-sm md:text-base leading-relaxed tracking-wide",
+                        children: "We design, build, and launch digital experiences that define tomorrow. Shaping ideas into high-performance web products."
                     }, void 0, false, {
                         fileName: "[project]/src/components/sections/HeroSection.jsx",
-                        lineNumber: 101,
+                        lineNumber: 99,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         ref: buttonsRef,
-                        className: "flex flex-wrap items-center gap-3 mt-8",
+                        className: "flex flex-wrap items-center gap-4 mt-8 md:mt-10",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                 ref: addMagneticRef,
                                 href: "mailto:hello@intellectstudio.com",
-                                className: "magnetic-btn text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-black transition-colors duration-300",
+                                className: "magnetic-btn border border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 px-5 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300",
                                 children: "Email Us"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 110,
+                                lineNumber: 108,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                 ref: addMagneticRef,
                                 href: "tel:+1234567890",
-                                className: "magnetic-btn text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-black transition-colors duration-300",
+                                className: "magnetic-btn border border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 px-5 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300",
                                 children: "Call Us"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 117,
+                                lineNumber: 115,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-px h-6 bg-black/20 mx-1 hidden md:block"
+                                className: "w-px h-6 bg-neutral-200 mx-1 hidden md:block"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 125,
+                                lineNumber: 123,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                 ref: addMagneticRef,
                                 href: "#register",
-                                className: "magnetic-btn text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-black transition-colors duration-300",
+                                className: "magnetic-btn border border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 px-5 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300",
                                 children: "Register"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 127,
+                                lineNumber: 125,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/teams",
-                                className: "bg-black text-white px-5 py-2.5 text-xs font-mono uppercase tracking-widest hover:bg-neutral-900 transition-colors duration-300 rounded-none",
+                                className: "bg-black hover:bg-neutral-800 text-white px-6 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300 rounded-none shadow-sm",
                                 children: "Teams"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                                lineNumber: 135,
+                                lineNumber: 133,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/sections/HeroSection.jsx",
-                        lineNumber: 109,
+                        lineNumber: 107,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                lineNumber: 78,
+                lineNumber: 77,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative z-10 px-8 md:px-12 pb-8 flex items-center gap-3",
+                className: "relative z-10 px-6 md:px-16 lg:px-24 pb-8 flex items-center gap-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-6 h-px bg-black/30"
+                        className: "w-8 h-px bg-neutral-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/sections/HeroSection.jsx",
-                        lineNumber: 146,
+                        lineNumber: 144,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "font-mono text-xs text-black/30 tracking-widest uppercase"
+                        className: "font-mono text-[9px] md:text-[10px] text-neutral-400 tracking-[0.25em] uppercase select-none",
+                        children: "SCROLL TO EXPLORE"
                     }, void 0, false, {
                         fileName: "[project]/src/components/sections/HeroSection.jsx",
-                        lineNumber: 147,
+                        lineNumber: 145,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/sections/HeroSection.jsx",
-                lineNumber: 145,
+                lineNumber: 143,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/sections/HeroSection.jsx",
-        lineNumber: 60,
+        lineNumber: 59,
         columnNumber: 5
     }, this);
 }
-_s(HeroSection, "PJgz16vOtz73YDVbaHM8PSa5rt0=");
+_s(HeroSection, "AnJChrF99AHDl07uuJSRcWR/tAw=");
 _c = HeroSection;
 var _c;
 __turbopack_context__.k.register(_c, "HeroSection");

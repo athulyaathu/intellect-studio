@@ -7,7 +7,6 @@ import Navbar from '../layout/Navbar';
 
 export default function HeroSection() {
   const sectionRef  = useRef(null);
-  const navRef      = useRef(null);
   const heroTextRef = useRef(null);
   const studioTextRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -60,13 +59,13 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full h-screen overflow-hidden bg-white flex flex-col"
+      className="relative w-full h-screen overflow-hidden bg-white flex flex-col justify-between"
     >
       {/* Ambient radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(0,0,0,0.03) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 70% 60% at 50% 40%, rgba(0,0,0,0.02) 0%, transparent 75%)',
           zIndex: 0,
         }}
       />
@@ -75,22 +74,21 @@ export default function HeroSection() {
       <Navbar />
 
       {/* Hero Content */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-12">
-        <div ref={heroTextRef}>
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 md:px-16 lg:px-24 max-w-5xl mt-16">
+        <div ref={heroTextRef} className="space-y-0.5">
           <h1
-            className="font-sans font-black text-black leading-none tracking-tight select-none"
-            style={{ fontSize: 'clamp(5rem, 16vw, 16rem)', letterSpacing: '-0.03em', lineHeight: 0.9 }}
+            className="font-sans font-black text-black leading-none tracking-tighter select-none"
+            style={{ fontSize: 'clamp(4rem, 13vw, 13rem)', lineHeight: 0.85 }}
           >
             INTELLECT
           </h1>
           <h2
             ref={studioTextRef}
-            className="font-sans font-black leading-none tracking-tight select-none"
+            className="font-sans font-black leading-none tracking-tighter select-none"
             style={{
-              fontSize: 'clamp(5rem, 16vw, 16rem)',
-              letterSpacing: '-0.03em',
-              lineHeight: 0.9,
-              color: '#9CA3AF',
+              fontSize: 'clamp(4rem, 13vw, 13rem)',
+              lineHeight: 0.85,
+              color: '#A3A3A3',
             }}
           >
             STUDIO
@@ -100,41 +98,41 @@ export default function HeroSection() {
         {/* Editorial paragraph */}
         <p
           ref={subtitleRef}
-          className="font-sans text-zinc-500 mt-8 max-w-sm text-base leading-relaxed"
+          className="font-sans text-neutral-500 mt-6 md:mt-8 max-w-md text-sm md:text-base leading-relaxed tracking-wide"
         >
-          Welcome here. We design, build, and launch digital experiences that define tomorrow.
+          We design, build, and launch digital experiences that define tomorrow. Shaping ideas into high-performance web products.
         </p>
 
         {/* Button suite */}
-        <div ref={buttonsRef} className="flex flex-wrap items-center gap-3 mt-8">
+        <div ref={buttonsRef} className="flex flex-wrap items-center gap-4 mt-8 md:mt-10">
           <a
             ref={addMagneticRef}
             href="mailto:hello@intellectstudio.com"
-            className="magnetic-btn text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-black transition-colors duration-300"
+            className="magnetic-btn border border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 px-5 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300"
           >
             Email Us
           </a>
           <a
             ref={addMagneticRef}
             href="tel:+1234567890"
-            className="magnetic-btn text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-black transition-colors duration-300"
+            className="magnetic-btn border border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 px-5 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300"
           >
             Call Us
           </a>
 
-          <div className="w-px h-6 bg-black/20 mx-1 hidden md:block" />
+          <div className="w-px h-6 bg-neutral-200 mx-1 hidden md:block" />
 
           <a
             ref={addMagneticRef}
             href="#register"
-            className="magnetic-btn text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-black transition-colors duration-300"
+            className="magnetic-btn border border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 px-5 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300"
           >
             Register
           </a>
 
           <Link
             href="/teams"
-            className="bg-black text-white px-5 py-2.5 text-xs font-mono uppercase tracking-widest hover:bg-neutral-900 transition-colors duration-300 rounded-none"
+            className="bg-black hover:bg-neutral-800 text-white px-6 py-3 text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-300 rounded-none shadow-sm"
           >
             Teams
           </Link>
@@ -142,10 +140,13 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="relative z-10 px-8 md:px-12 pb-8 flex items-center gap-3">
-        <div className="w-6 h-px bg-black/30" />
-        <span className="font-mono text-xs text-black/30 tracking-widest uppercase"></span>
+      <div className="relative z-10 px-6 md:px-16 lg:px-24 pb-8 flex items-center gap-3">
+        <div className="w-8 h-px bg-neutral-300" />
+        <span className="font-mono text-[9px] md:text-[10px] text-neutral-400 tracking-[0.25em] uppercase select-none">
+          SCROLL TO EXPLORE
+        </span>
       </div>
     </section>
   );
 }
+
