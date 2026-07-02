@@ -1,63 +1,132 @@
-/* src/components/layout/Footer.jsx */
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+
+const navLinks = [
+  { label: 'About', href: '#about' },
+  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Metrics', href: '#metrics' },
+  { label: 'Teams', href: '/teams' },
+  { label: 'Contact', href: '#contact' },
+];
+
+const socialLinks = [
+  { label: 'Instagram', href: 'https://instagram.com/intellectstudio' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/company/intellectstudio' },
+  { label: 'Dribbble', href: 'https://dribbble.com/intellectstudio' },
+];
+
+function useBackToTop() {
+  return useCallback(() => {
+    const start = window.scrollY;
+    const duration = 900;
+    const startTime = performance.now();
+
+    const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+
+    const step = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, start * (1 - easeOutCubic(progress)));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  }, []);
+}
 
 export default function Footer() {
-  // Theme detection – mirrors Navbar logic for visual consistency
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const backToTop = useBackToTop();
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const vh = window.innerHeight;
-      // Same dark‑theme trigger used in Navbar (entering Portfolio section)
-      setIsDarkTheme(scrollY >= vh * 3.5 - 80);
+      const viewportHeight = window.innerHeight;
+      setIsDarkTheme(scrollY >= viewportHeight * 3.5 - 80);
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
+
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const footerTheme = isDarkTheme
-    ? "bg-neutral-950/80 border-white/10 text-white"
-    : "bg-white/80 border-black/5 text-neutral-900";
-
-  const linkHover = isDarkTheme ? "hover:text-cyan-400" : "hover:text-neutral-500";
+    ? 'border-slate-800 bg-slate-950 text-slate-50'
+    : 'border-slate-200 bg-white text-slate-900';
+  const mutedText = isDarkTheme ? 'text-slate-400' : 'text-slate-500';
+  const linkHover = isDarkTheme ? 'hover:text-cyan-400' : 'hover:text-cyan-600';
+  const dividerColor = isDarkTheme ? 'bg-slate-800' : 'bg-slate-200';
+  const buttonTheme = isDarkTheme
+    ? 'border-slate-700 text-slate-200 hover:border-cyan-400 hover:text-cyan-400'
+    : 'border-slate-300 text-slate-600 hover:border-cyan-600 hover:text-cyan-600';
 
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className={`border-t ${footerTheme} transition-colors duration-300`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Branding */}
-        <Link
-          href="/"
-          className="font-sans font-black tracking-widest uppercase text-xs sm:text-sm select-none"
-          style={{ letterSpacing: "0.25em" }}
-        >
-          INTELLECT STUDIO
-        </Link>
+    <footer id="site-footer" role="contentinfo" aria-label="Site footer" className={`border-t transition-colors duration-500 ${footerTheme}`}>
+      <div className="mx-auto w-full max-w-7xl px-6 py-10 sm:px-8 md:px-12 md:py-12 lg:px-16">
+        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-[1.2fr_0.8fr_0.8fr] md:gap-8 lg:gap-10">
+          <div className="flex flex-col gap-3">
+            <Link href="/" className="text-sm font-black uppercase tracking-[0.3em]" aria-label="Intellect Studio — home">
+              Intellect Studio
+            </Link>
+            <p className={`max-w-[24ch] text-[11px] leading-relaxed ${mutedText}`}>
+              Designing and building digital experiences that feel precise, calm, and unmistakably modern.
+            </p>
+          </div>
 
-        {/* Navigation links – minimal set */}
-        <nav className="flex flex-wrap items-center gap-4 text-[11px] font-mono uppercase tracking-widest">
-          <Link href="#about" className={`transition-colors duration-300 ${linkHover}`}>About</Link>
-          <Link href="#portfolio" className={`transition-colors duration-300 ${linkHover}`}>Portfolio</Link>
-          <Link href="#contact" className={`transition-colors duration-300 ${linkHover}`}>Contact</Link>
-        </nav>
+          <nav aria-label="Footer navigation" className="flex flex-col gap-3">
+            <span className={`text-[10px] font-mono uppercase tracking-[0.25em] ${mutedText}`}>
+              Navigate
+            </span>
+            {navLinks.map((link) =>
+              link.href.startsWith('#') ? (
+                <a key={link.label} href={link.href} className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors duration-300 ${linkHover}`}>
+                  {link.label}
+                </a>
+              ) : (
+                <Link key={link.label} href={link.href} className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors duration-300 ${linkHover}`}>
+                  {link.label}
+                </Link>
+              )
+            )}
+          </nav>
 
-        {/* Social / contact */}
-        <div className="flex items-center gap-3 text-sm">
-          <a href="mailto:info@intellectstudio.com" className={`transition-colors duration-300 ${linkHover}`}>info@intellectstudio.com</a>
-          <a href="https://twitter.com/intellectstudio" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-300 ${linkHover}`}>Twitter</a>
-          <a href="https://github.com/intellectstudio" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-300 ${linkHover}`}>GitHub</a>
+          <div className="flex flex-col gap-3">
+            <span className={`text-[10px] font-mono uppercase tracking-[0.25em] ${mutedText}`}>
+              Contact
+            </span>
+            <a href="mailto:hello@intellectstudio.com" className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors duration-300 ${linkHover}`}>
+              hello@intellectstudio.com
+            </a>
+            <div className={`mt-1 h-px w-8 ${dividerColor}`} aria-hidden="true" />
+            <div className="flex flex-wrap gap-4">
+              {socialLinks.map((link) => (
+                <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors duration-300 ${linkHover}`}>
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Copyright */}
-        <p className="text-xs text-center md:text-right w-full md:w-auto">
-          © {currentYear} INTELLECT STUDIO. All rights reserved.
-        </p>
+      <div className={`border-t ${isDarkTheme ? 'border-white/10' : 'border-black/10'}`}>
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row md:px-12">
+          <p className={`text-[10px] font-mono uppercase tracking-[0.2em] ${mutedText}`}>
+            © {currentYear} Intellect Studio. All rights reserved.
+          </p>
+          <button
+            type="button"
+            onClick={backToTop}
+            className={`rounded-full border px-4 py-2 text-[10px] font-mono uppercase tracking-[0.2em] transition-colors duration-300 ${buttonTheme}`}
+            aria-label="Scroll back to top"
+          >
+            ↑ Back to top
+          </button>
+        </div>
       </div>
     </footer>
   );

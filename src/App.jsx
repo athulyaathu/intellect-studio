@@ -8,6 +8,11 @@ import AboutSection from './components/sections/AboutSection';
 import PortfolioSection from './components/sections/PortfolioSection';
 import MetricsSection from './components/sections/MetricsSection';
 import FooterSection from './components/sections/FooterSection';
+// NOTE: FooterSection above is the teammate's full-bleed dark contact/CTA section.
+// It is a CONTENT section — not a layout component. The site-wide footer bar
+// (layout/Footer.jsx) is rendered globally from src/app/layout.jsx.
+// When the team decides to deprecate FooterSection, the teammate removes it here
+// and the CTA content moves to a dedicated form section or into Footer.jsx.
 
 // HomePage isolates all portal + section state.
 // On unmount, kill every active ScrollTrigger to prevent DOM leaks when routing away.
@@ -20,7 +25,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="relative overflow-x-hidden bg-[color:var(--page-bg)]">
       <VRPortal />
       <HeroSection />
       <AboutSection />

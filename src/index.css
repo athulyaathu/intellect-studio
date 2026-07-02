@@ -16,11 +16,22 @@ body {
   scroll-behavior: auto;
 }
 
+:root {
+  --page-bg: #f8fafc;
+  --surface-bg: #ffffff;
+  --text-strong: #020617;
+  --text-muted: #475569;
+  --border-soft: #e2e8f0;
+  --accent: #06b6d4;
+  --accent-strong: #0891b2;
+  --accent-soft: rgba(6, 182, 212, 0.12);
+}
+
 body {
   overflow-x: hidden;
-  background: #FDFBF7;
-  /* Prevent body from becoming an unexpected containing block */
-  /* for fixed children — keep position at default (static) */
+  background: var(--page-bg);
+  color: var(--text-strong);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {

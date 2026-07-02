@@ -384,7 +384,9 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -392,17 +394,32 @@ function Navbar() {
     const [isVisible, setIsVisible] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isDarkTheme, setIsDarkTheme] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [scrollProgress, setScrollProgress] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const applyButtonRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const mobileApplyButtonRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    // Dynamic visibility and theme shifting based on scroll position
+    const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["usePathname"])();
+    // -------------------------------------------------------------------------
+    // Close mobile menu whenever the route changes
+    // -------------------------------------------------------------------------
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        setIsMobileMenuOpen(false);
+    }, [
+        pathname
+    ]);
+    // -------------------------------------------------------------------------
+    // Scroll: visibility, dark-theme trigger, progress bar
+    // -------------------------------------------------------------------------
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const handleScroll = ()=>{
             const scrollY = window.scrollY;
             const vh = window.innerHeight;
-            // Visibility: Show navbar after the VRPortal runway (1.5vh)
+            const maxScroll = document.documentElement.scrollHeight - vh;
+            // Visibility: show after VRPortal runway (1.5 × vh)
             setIsVisible(scrollY >= vh * 1.5 - 60);
-            // Theme: Switch to dark theme when entering Portfolio section (runway 1.5vh + hero 1vh + about 1vh = 3.5vh)
+            // Theme: dark when entering Portfolio section (3.5 × vh)
             setIsDarkTheme(scrollY >= vh * 3.5 - 80);
+            // Progress: 0 → 1 over the total scrollable distance
+            setScrollProgress(maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0);
         };
         window.addEventListener('scroll', handleScroll, {
             passive: true
@@ -410,7 +427,9 @@ function Navbar() {
         handleScroll();
         return ()=>window.removeEventListener('scroll', handleScroll);
     }, []);
-    // Self-contained magnetic pull effect for the CTA button
+    // -------------------------------------------------------------------------
+    // Magnetic pull on the Apply CTA button(s)
+    // -------------------------------------------------------------------------
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const applyMagnetic = (buttonEl)=>{
             if (!buttonEl) return;
@@ -427,7 +446,7 @@ function Navbar() {
                 }
             };
             const onLeave = ()=>{
-                buttonEl.style.transform = `translate(0px, 0px)`;
+                buttonEl.style.transform = 'translate(0px, 0px)';
             };
             window.addEventListener('mousemove', onMove);
             buttonEl.addEventListener('mouseleave', onLeave);
@@ -446,9 +465,9 @@ function Navbar() {
         isVisible,
         isMobileMenuOpen
     ]);
-    const toggleMobileMenu = ()=>{
-        setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
+    // -------------------------------------------------------------------------
+    // Data
+    // -------------------------------------------------------------------------
     const navLinks = [
         {
             label: 'About',
@@ -476,63 +495,112 @@ function Navbar() {
             type: 'anchor'
         }
     ];
-    // Colors & Themes styling matching black/white/gray aesthetic
+    // -------------------------------------------------------------------------
+    // Theme tokens
+    // -------------------------------------------------------------------------
     const navbarTheme = isDarkTheme ? 'bg-neutral-950/80 border-white/10 text-white' : 'bg-white/80 border-black/5 text-neutral-900';
     const mobileMenuTheme = isDarkTheme ? 'bg-neutral-950 text-white border-white/10' : 'bg-white text-neutral-900 border-black/5';
     const linkHover = isDarkTheme ? 'hover:text-cyan-400' : 'hover:text-neutral-500';
     const btnTheme = isDarkTheme ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800';
+    const barColor = isDarkTheme ? 'bg-cyan-400' : 'bg-black';
+    const hamColor = isDarkTheme ? 'bg-white' : 'bg-black';
+    // -------------------------------------------------------------------------
+    // Link renderer (shared between desktop and mobile)
+    // -------------------------------------------------------------------------
+    const renderLink = (link, extraClass = '')=>{
+        const isActive = link.type === 'route' && pathname === link.href;
+        const linkClass = [
+            'font-mono text-[11px] uppercase tracking-widest transition-colors duration-300',
+            linkHover,
+            extraClass
+        ].join(' ');
+        if (link.type === 'route') {
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                href: link.href,
+                id: `nav-link-${link.label.toLowerCase()}`,
+                className: linkClass,
+                "aria-current": isActive ? 'page' : undefined,
+                style: {
+                    letterSpacing: '0.15em'
+                },
+                onClick: ()=>setIsMobileMenuOpen(false),
+                children: link.label
+            }, link.label, false, {
+                fileName: "[project]/src/components/layout/Navbar.jsx",
+                lineNumber: 151,
+                columnNumber: 9
+            }, this);
+        }
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+            href: link.href,
+            id: `nav-link-${link.label.toLowerCase()}`,
+            className: linkClass,
+            style: {
+                letterSpacing: '0.15em'
+            },
+            onClick: ()=>setIsMobileMenuOpen(false),
+            children: link.label
+        }, link.label, false, {
+            fileName: "[project]/src/components/layout/Navbar.jsx",
+            lineNumber: 166,
+            columnNumber: 7
+        }, this);
+    };
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
+        id: "site-navbar",
+        role: "banner",
         className: `fixed top-0 left-0 right-0 z-50 w-full border-b backdrop-blur-md transition-all duration-500 ease-out ${navbarTheme} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`,
         children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: `absolute top-0 left-0 h-[2px] ${barColor} transition-all duration-100`,
+                style: {
+                    width: `${scrollProgress * 100}%`
+                },
+                role: "progressbar",
+                "aria-valuenow": Math.round(scrollProgress * 100),
+                "aria-valuemin": 0,
+                "aria-valuemax": 100,
+                "aria-label": "Page scroll progress"
+            }, void 0, false, {
+                fileName: "[project]/src/components/layout/Navbar.jsx",
+                lineNumber: 193,
+                columnNumber: 7
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                         href: "/",
+                        id: "nav-brand",
                         className: "font-sans font-black tracking-widest uppercase text-xs sm:text-sm select-none",
                         style: {
                             letterSpacing: '0.25em'
                         },
+                        "aria-label": "Intellect Studio — home",
                         children: "INTELLECT STUDIO"
                     }, void 0, false, {
                         fileName: "[project]/src/components/layout/Navbar.jsx",
-                        lineNumber: 111,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
+                        id: "desktop-nav",
                         className: "hidden md:flex items-center gap-8",
-                        children: navLinks.map((link)=>link.type === 'route' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                href: link.href,
-                                className: `font-mono text-[11px] uppercase tracking-widest transition-colors duration-300 ${linkHover}`,
-                                style: {
-                                    letterSpacing: '0.15em'
-                                },
-                                children: link.label
-                            }, link.label, false, {
-                                fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 123,
-                                columnNumber: 15
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                href: link.href,
-                                className: `font-mono text-[11px] uppercase tracking-widest transition-colors duration-300 ${linkHover}`,
-                                style: {
-                                    letterSpacing: '0.15em'
-                                },
-                                children: link.label
-                            }, link.label, false, {
-                                fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 132,
-                                columnNumber: 15
-                            }, this))
+                        "aria-label": "Primary navigation",
+                        children: navLinks.map((link)=>renderLink(link))
                     }, void 0, false, {
                         fileName: "[project]/src/components/layout/Navbar.jsx",
-                        lineNumber: 120,
+                        lineNumber: 218,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "hidden md:block",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                             ref: applyButtonRef,
+                            id: "nav-apply-cta",
                             href: "#contact",
                             className: `magnetic-btn inline-block font-sans font-bold text-xs tracking-wider uppercase px-6 py-3 transition-colors duration-300 ${btnTheme}`,
                             style: {
@@ -541,84 +609,68 @@ function Navbar() {
                             children: "Apply Now →"
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/Navbar.jsx",
-                            lineNumber: 146,
+                            lineNumber: 228,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/layout/Navbar.jsx",
-                        lineNumber: 145,
+                        lineNumber: 227,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: toggleMobileMenu,
-                        className: "md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 focus:outline-none",
-                        "aria-label": "Toggle navigation menu",
+                        id: "mobile-menu-toggle",
+                        onClick: ()=>setIsMobileMenuOpen((prev)=>!prev),
+                        className: "md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-current",
+                        "aria-label": isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu',
+                        "aria-expanded": isMobileMenuOpen,
+                        "aria-controls": "mobile-nav",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: `w-6 h-0.5 transition-all duration-300 transform ${isDarkTheme ? 'bg-white' : 'bg-black'} ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`
+                                className: `w-6 h-0.5 transition-all duration-300 transform ${hamColor} ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 162,
+                                lineNumber: 248,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: `w-6 h-0.5 transition-all duration-300 ${isDarkTheme ? 'bg-white' : 'bg-black'} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`
+                                className: `w-6 h-0.5 transition-all duration-300 ${hamColor} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 167,
+                                lineNumber: 253,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: `w-6 h-0.5 transition-all duration-300 transform ${isDarkTheme ? 'bg-white' : 'bg-black'} ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`
+                                className: `w-6 h-0.5 transition-all duration-300 transform ${hamColor} ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 172,
+                                lineNumber: 258,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/layout/Navbar.jsx",
-                        lineNumber: 157,
+                        lineNumber: 240,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/layout/Navbar.jsx",
-                lineNumber: 109,
+                lineNumber: 204,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                id: "mobile-nav",
+                role: "navigation",
+                "aria-label": "Mobile navigation",
+                "aria-hidden": !isMobileMenuOpen,
                 className: `md:hidden fixed top-20 left-0 right-0 bottom-0 z-40 w-full h-[calc(100vh-5rem)] border-t transition-all duration-300 ease-in-out ${mobileMenuTheme} ${isMobileMenuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex flex-col items-center justify-center h-full gap-8 px-6 pb-20",
                     children: [
-                        navLinks.map((link)=>link.type === 'route' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                href: link.href,
-                                onClick: ()=>setIsMobileMenuOpen(false),
-                                className: `font-mono text-base uppercase tracking-widest transition-colors duration-300 ${linkHover}`,
-                                style: {
-                                    letterSpacing: '0.2em'
-                                },
-                                children: link.label
-                            }, link.label, false, {
-                                fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 191,
-                                columnNumber: 15
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                href: link.href,
-                                onClick: ()=>setIsMobileMenuOpen(false),
-                                className: `font-mono text-base uppercase tracking-widest transition-colors duration-300 ${linkHover}`,
-                                style: {
-                                    letterSpacing: '0.2em'
-                                },
-                                children: link.label
-                            }, link.label, false, {
-                                fileName: "[project]/src/components/layout/Navbar.jsx",
-                                lineNumber: 201,
-                                columnNumber: 15
-                            }, this)),
+                        navLinks.map((link)=>renderLink(link, 'text-base')),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                             ref: mobileApplyButtonRef,
+                            id: "mobile-apply-cta",
                             href: "#contact",
                             onClick: ()=>setIsMobileMenuOpen(false),
                             className: `magnetic-btn font-sans font-bold text-xs tracking-wider uppercase px-8 py-4 mt-4 transition-colors duration-300 ${btnTheme}`,
@@ -628,24 +680,24 @@ function Navbar() {
                             children: "Apply Now →"
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/Navbar.jsx",
-                            lineNumber: 212,
+                            lineNumber: 282,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/layout/Navbar.jsx",
-                    lineNumber: 188,
+                    lineNumber: 278,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/layout/Navbar.jsx",
-                lineNumber: 181,
+                lineNumber: 267,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/layout/Navbar.jsx",
-        lineNumber: 102,
+        lineNumber: 183,
         columnNumber: 5
     }, this);
 }

@@ -1,223 +1,172 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Button } from '../ui';
+
+const navLinks = [
+  { label: 'About', href: '#about', type: 'anchor' },
+  { label: 'Portfolio', href: '#portfolio', type: 'anchor' },
+  { label: 'Metrics', href: '#metrics', type: 'anchor' },
+  { label: 'Teams', href: '/teams', type: 'route' },
+  { label: 'Contact', href: '#contact', type: 'anchor' },
+];
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const applyButtonRef = useRef(null);
-  const mobileApplyButtonRef = useRef(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const pathname = usePathname();
 
-  // Dynamic visibility and theme shifting based on scroll position
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const vh = window.innerHeight;
-      
-      // Visibility: Show navbar after the VRPortal runway (1.5vh)
-      setIsVisible(scrollY >= vh * 1.5 - 60);
+      const viewportHeight = window.innerHeight;
+      const maxScroll = document.documentElement.scrollHeight - viewportHeight;
 
-      // Theme: Switch to dark theme when entering Portfolio section (runway 1.5vh + hero 1vh + about 1vh = 3.5vh)
-      setIsDarkTheme(scrollY >= vh * 3.5 - 80);
+      setIsVisible(scrollY >= viewportHeight * 1.5 - 60);
+      setIsDarkTheme(scrollY >= viewportHeight * 3.5 - 80);
+      setScrollProgress(maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Self-contained magnetic pull effect for the CTA button
   useEffect(() => {
-    const applyMagnetic = (buttonEl) => {
-      if (!buttonEl) return;
-      const RADIUS = 65;
-      const STRENGTH = 0.25;
+    if (!isMobileMenuOpen) return;
 
-      const onMove = (e) => {
-        const rect = buttonEl.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = e.clientX - cx;
-        const dy = e.clientY - cy;
-
-        if (Math.hypot(dx, dy) < RADIUS) {
-          buttonEl.style.transform = `translate(${dx * STRENGTH}px, ${dy * STRENGTH}px)`;
-        }
-      };
-
-      const onLeave = () => {
-        buttonEl.style.transform = `translate(0px, 0px)`;
-      };
-
-      window.addEventListener('mousemove', onMove);
-      buttonEl.addEventListener('mouseleave', onLeave);
-
-      return () => {
-        window.removeEventListener('mousemove', onMove);
-        buttonEl.removeEventListener('mouseleave', onLeave);
-      };
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+      }
     };
 
-    const cleanupApply = applyMagnetic(applyButtonRef.current);
-    const cleanupMobileApply = applyMagnetic(mobileApplyButtonRef.current);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileMenuOpen]);
 
-    return () => {
-      if (cleanupApply) cleanupApply();
-      if (cleanupMobileApply) cleanupMobileApply();
-    };
-  }, [isVisible, isMobileMenuOpen]);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const navLinks = [
-    { label: 'About', href: '#about', type: 'anchor' },
-    { label: 'Portfolio', href: '#portfolio', type: 'anchor' },
-    { label: 'Metrics', href: '#metrics', type: 'anchor' },
-    { label: 'Teams', href: '/teams', type: 'route' },
-    { label: 'Contact', href: '#contact', type: 'anchor' },
-  ];
-
-  // Colors & Themes styling matching black/white/gray aesthetic
   const navbarTheme = isDarkTheme
-    ? 'bg-neutral-950/80 border-white/10 text-white'
-    : 'bg-white/80 border-black/5 text-neutral-900';
+    ? 'border-slate-800 bg-slate-950/95 text-slate-50'
+    : 'border-slate-200 bg-white/90 text-slate-900';
 
   const mobileMenuTheme = isDarkTheme
-    ? 'bg-neutral-950 text-white border-white/10'
-    : 'bg-white text-neutral-900 border-black/5';
+    ? 'border-slate-800 bg-slate-950 text-slate-50'
+    : 'border-slate-200 bg-white text-slate-900';
 
-  const linkHover = isDarkTheme
-    ? 'hover:text-cyan-400'
-    : 'hover:text-neutral-500';
+  const progressColor = isDarkTheme ? 'bg-cyan-400' : 'bg-cyan-500';
+  const linkHover = isDarkTheme ? 'hover:text-cyan-400' : 'hover:text-cyan-600';
+  const buttonTheme = isDarkTheme ? 'dark' : undefined;
 
-  const btnTheme = isDarkTheme
-    ? 'bg-white text-black hover:bg-neutral-200'
-    : 'bg-black text-white hover:bg-neutral-800';
+  const renderLink = (link, extraClass = '') => {
+    const isActive = link.type === 'route' && pathname === link.href;
+    const baseClass = [
+      'font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-300',
+      linkHover,
+      extraClass,
+    ].filter(Boolean).join(' ');
+
+    if (link.type === 'route') {
+      return (
+        <Link
+          key={link.label}
+          href={link.href}
+          className={baseClass}
+          aria-current={isActive ? 'page' : undefined}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          {link.label}
+        </Link>
+      );
+    }
+
+    return (
+      <a
+        key={link.label}
+        href={link.href}
+        className={baseClass}
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        {link.label}
+      </a>
+    );
+  };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full border-b backdrop-blur-md transition-all duration-500 ease-out ${navbarTheme} ${
-        isVisible 
-          ? 'opacity-100 translate-y-0' 
-          : 'opacity-0 -translate-y-full pointer-events-none'
+      id="site-navbar"
+      role="banner"
+      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md transition-all duration-500 ease-out ${navbarTheme} ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link 
-          href="/" 
-          className="font-sans font-black tracking-widest uppercase text-xs sm:text-sm select-none"
-          style={{ letterSpacing: '0.25em' }}
+      <div
+        className={`absolute inset-x-0 top-0 h-[2px] ${progressColor}`}
+        style={{ width: `${scrollProgress * 100}%` }}
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(scrollProgress * 100)}
+        aria-label="Page scroll progress"
+      />
+
+      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 md:px-12">
+        <Link
+          href="/"
+          className="select-none text-[10px] font-black uppercase tracking-[0.25em] sm:text-[11px] sm:tracking-[0.3em]"
+          aria-label="Intellect Studio — home"
         >
-          INTELLECT STUDIO
+          Intellect Studio
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            link.type === 'route' ? (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={`font-mono text-[11px] uppercase tracking-widest transition-colors duration-300 ${linkHover}`}
-                style={{ letterSpacing: '0.15em' }}
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`font-mono text-[11px] uppercase tracking-widest transition-colors duration-300 ${linkHover}`}
-                style={{ letterSpacing: '0.15em' }}
-              >
-                {link.label}
-              </a>
-            )
-          ))}
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary navigation">
+          {navLinks.map((link) => renderLink(link))}
         </nav>
 
-        {/* Desktop Apply CTA */}
         <div className="hidden md:block">
-          <a
-            ref={applyButtonRef}
-            href="#contact"
-            className={`magnetic-btn inline-block font-sans font-bold text-xs tracking-wider uppercase px-6 py-3 transition-colors duration-300 ${btnTheme}`}
-            style={{ letterSpacing: '0.08em' }}
-          >
-            Apply Now →
-          </a>
+          <Button as="a" href="#contact" magnetic size="sm" dark={buttonTheme === 'dark'}>
+            Apply Now
+          </Button>
         </div>
 
-        {/* Mobile menu toggle */}
         <button
-          onClick={toggleMobileMenu}
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 focus:outline-none"
-          aria-label="Toggle navigation menu"
+          type="button"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-transparent text-current outline-none transition-colors duration-300 focus-visible:border-current focus-visible:ring-2 focus-visible:ring-current/40 md:hidden"
+          aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-nav"
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
         >
-          <span 
-            className={`w-6 h-0.5 transition-all duration-300 transform ${isDarkTheme ? 'bg-white' : 'bg-black'} ${
-              isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''
-            }`}
-          />
-          <span 
-            className={`w-6 h-0.5 transition-all duration-300 ${isDarkTheme ? 'bg-white' : 'bg-black'} ${
-              isMobileMenuOpen ? 'opacity-0' : 'opacity-100'
-            }`}
-          />
-          <span 
-            className={`w-6 h-0.5 transition-all duration-300 transform ${isDarkTheme ? 'bg-white' : 'bg-black'} ${
-              isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
-            }`}
-          />
+          <span className="sr-only">Toggle menu</span>
+          <span className="flex flex-col items-center gap-1.5">
+            <span className={`h-0.5 w-5 rounded-full bg-current transition-all ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+            <span className={`h-0.5 w-5 rounded-full bg-current transition-all ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+            <span className={`h-0.5 w-5 rounded-full bg-current transition-all ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+          </span>
         </button>
       </div>
 
-      {/* Mobile Overlay Menu */}
       <div
-        className={`md:hidden fixed top-20 left-0 right-0 bottom-0 z-40 w-full h-[calc(100vh-5rem)] border-t transition-all duration-300 ease-in-out ${mobileMenuTheme} ${
-          isMobileMenuOpen 
-            ? 'opacity-100 translate-y-0 pointer-events-auto' 
-            : 'opacity-0 -translate-y-4 pointer-events-none'
+        id="mobile-nav"
+        role="navigation"
+        aria-label="Mobile navigation"
+        aria-hidden={!isMobileMenuOpen}
+        className={`fixed inset-x-0 top-20 z-[60] h-[calc(100vh-5rem)] border-t transition-all duration-300 ease-out md:hidden ${mobileMenuTheme} ${
+          isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none'
         }`}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-8 px-6 pb-20">
-          {navLinks.map((link) => (
-            link.type === 'route' ? (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`font-mono text-base uppercase tracking-widest transition-colors duration-300 ${linkHover}`}
-                style={{ letterSpacing: '0.2em' }}
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`font-mono text-base uppercase tracking-widest transition-colors duration-300 ${linkHover}`}
-                style={{ letterSpacing: '0.2em' }}
-              >
-                {link.label}
-              </a>
-            )
-          ))}
-          <a
-            ref={mobileApplyButtonRef}
-            href="#contact"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`magnetic-btn font-sans font-bold text-xs tracking-wider uppercase px-8 py-4 mt-4 transition-colors duration-300 ${btnTheme}`}
-            style={{ letterSpacing: '0.1em' }}
-          >
-            Apply Now →
-          </a>
+        <div className="flex h-full flex-col items-center justify-center gap-6 px-6 pb-20 sm:gap-8">
+          {navLinks.map((link) => renderLink(link, 'text-base'))}
+          <Button as="a" href="#contact" magnetic size="md" dark={buttonTheme === 'dark'} onClick={() => setIsMobileMenuOpen(false)}>
+            Apply Now
+          </Button>
         </div>
       </div>
     </header>
