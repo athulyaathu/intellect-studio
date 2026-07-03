@@ -14,3 +14,5 @@ export { default as Badge } from './Badge';
 export { default as SectionLabel } from './SectionLabel';
 export { default as Divider } from './Divider';
 export { useMagneticEffect } from './hooks/useMagneticEffect';
+export { useRevealAnimation } from './hooks/useRevealAnimation';
+export { default as MagneticButton } from './MagneticButton';

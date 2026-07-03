@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 const navLinks = [
@@ -39,6 +39,7 @@ function useBackToTop() {
 export default function Footer() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const backToTop = useBackToTop();
+  const footerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,6 +51,47 @@ export default function Footer() {
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Reveal animation: run once when footer enters viewport.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const el = footerRef.current;
+    if (!el) return;
+
+    const gsap = require('gsap').default;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // If reduced motion, ensure visible and exit early
+    if (reduced) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      return;
+    }
+
+    // Initial hidden state
+    gsap.set(el, { y: 24, opacity: 0 });
+
+    let observer;
+    const onIntersect = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          gsap.to(el, { y: 0, opacity: 1, duration: 0.38, ease: 'power3.out' });
+          if (observer) observer.disconnect();
+        }
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(onIntersect, { threshold: 0.08 });
+      observer.observe(el);
+    } else {
+      // Fallback: simple timeout after mount
+      const t = setTimeout(() => gsap.to(el, { y: 0, opacity: 1, duration: 0.38, ease: 'power3.out' }), 300);
+      return () => clearTimeout(t);
+    }
+
+    return () => observer && observer.disconnect();
   }, []);
 
   const footerTheme = isDarkTheme

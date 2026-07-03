@@ -12,7 +12,7 @@
  */
 
 import { useEffect } from 'react';
-import { gsap } from 'gsap';
+import gsap from 'gsap';
 
 /**
  * @param {React.RefObject<HTMLElement>} ref - Ref attached to the target element.
@@ -25,6 +25,13 @@ export function useMagneticEffect(ref, { radius = 80, strength = 0.35 } = {}) {
     const el = ref?.current;
     if (!el) return;
 
+    // Respect reduced motion and touch pointers
+    const reduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    // Ignore on touch devices where magnetic cursors aren't useful
+    if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) return;
+
     const onMove = (e) => {
       const rect = el.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
@@ -32,27 +39,27 @@ export function useMagneticEffect(ref, { radius = 80, strength = 0.35 } = {}) {
       const dx = e.clientX - cx;
       const dy = e.clientY - cy;
 
-      if (Math.hypot(dx, dy) < radius) {
+      const dist = Math.hypot(dx, dy);
+      if (dist < radius) {
         gsap.to(el, {
           x: dx * strength,
           y: dy * strength,
-          duration: 0.3,
-          ease: 'power2.out',
+          duration: 0.28,
+          ease: 'power3.out',
         });
       }
     };
 
     const onLeave = () => {
-      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+      gsap.to(el, { x: 0, y: 0, duration: 0.32, ease: 'power3.out' });
     };
 
-    el.addEventListener('mousemove', onMove);
-    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerleave', onLeave);
 
     return () => {
-      el.removeEventListener('mousemove', onMove);
-      el.removeEventListener('mouseleave', onLeave);
-      // Reset position on unmount
+      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerleave', onLeave);
       gsap.set(el, { x: 0, y: 0 });
     };
   }, [ref, radius, strength]);

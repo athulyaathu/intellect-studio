@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '../ui';
@@ -24,6 +24,9 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
+  const headerRef = useRef(null);
+  const progressRef = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -39,6 +42,55 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Smooth show/hide and theme transitions using GSAP
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const gsap = require('gsap').default;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const el = headerRef.current;
+    const pbar = progressRef.current;
+    if (!el) return;
+
+    const showY = 0;
+    const hideY = -120;
+
+    if (reduced) {
+      el.style.transform = isVisible ? 'translateY(0)' : `translateY(${hideY}px)`;
+      el.style.opacity = isVisible ? '1' : '0';
+      el.style.pointerEvents = isVisible ? 'auto' : 'none';
+    } else {
+      gsap.to(el, {
+        y: isVisible ? showY : hideY,
+        opacity: isVisible ? 1 : 0,
+        duration: 0.38,
+        ease: 'expo.out',
+        onStart: () => {
+          if (isVisible) el.style.pointerEvents = 'auto';
+        },
+        onComplete: () => {
+          if (!isVisible) el.style.pointerEvents = 'none';
+        },
+      });
+    }
+
+    // Theme transition: animate background/border/text colors
+    const light = { bg: 'rgba(255,255,255,0.9)', border: '#e6edf3', color: '#0f172a', progress: '#06b6d4' };
+    const dark = { bg: 'rgba(7,12,17,0.95)', border: '#0b1220', color: '#f8fafc', progress: '#67e8f9' };
+    const target = isDarkTheme ? dark : light;
+
+    if (reduced) {
+      el.style.backgroundColor = target.bg;
+      el.style.borderColor = target.border;
+      el.style.color = target.color;
+      if (pbar) pbar.style.backgroundColor = target.progress;
+    } else {
+      gsap.to(el, { backgroundColor: target.bg, borderColor: target.border, color: target.color, duration: 0.45, ease: 'power3.out' });
+      if (pbar) gsap.to(pbar, { backgroundColor: target.progress, duration: 0.45, ease: 'power3.out' });
+    }
+
+    return () => {};
+  }, [isVisible, isDarkTheme]);
 
   useEffect(() => {
     if (!isMobileMenuOpen) return;
@@ -101,13 +153,14 @@ export default function Navbar() {
 
   return (
     <header
+      ref={headerRef}
       id="site-navbar"
       role="banner"
-      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md transition-all duration-500 ease-out ${navbarTheme} ${
-        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md ${navbarTheme}`}
+      style={{ transform: 'translateY(-120px)', opacity: 0 }}
     >
       <div
+        ref={progressRef}
         className={`absolute inset-x-0 top-0 h-[2px] ${progressColor}`}
         style={{ width: `${scrollProgress * 100}%` }}
         role="progressbar"

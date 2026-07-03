@@ -1,11 +1,26 @@
 "use client";
 
 import Link from 'next/link';
-import { Button, Container } from '../ui';
+import { useRef } from 'react';
+import { Button, Container, useRevealAnimation } from '../ui';
 
 export default function HeroSection() {
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const copyRef = useRef(null);
+  const actionsRef = useRef(null);
+
+  // Use reusable reveal hook (keeps the same timing as before)
+  useRevealAnimation([titleRef, copyRef, actionsRef], {
+    steps: [
+      { selector: 'p, h1, h2', y: 30, duration: 0.6, stagger: 0.08 },
+      { y: 18, duration: 0.5 },
+      { y: 10, duration: 0.45, stagger: 0.08 },
+    ],
+  });
+
   return (
-    <section id="hero" className="relative flex min-h-[calc(100vh-5rem)] w-full overflow-hidden bg-[linear-gradient(135deg,#ffffff_0%,#f8fafc_55%,#f0f9ff_100%)]">
+    <section ref={sectionRef} id="hero" className="relative flex min-h-[calc(100vh-5rem)] w-full overflow-hidden bg-[linear-gradient(135deg,#ffffff_0%,#f8fafc_55%,#f0f9ff_100%)]">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -16,7 +31,7 @@ export default function HeroSection() {
 
       <Container className="relative z-10 flex flex-1 flex-col justify-between py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36">
         <div className="flex flex-1 flex-col justify-center">
-          <div className="max-w-4xl space-y-2 sm:space-y-3">
+          <div ref={titleRef} className="max-w-4xl space-y-2 sm:space-y-3">
             <p className="text-[9px] font-mono uppercase tracking-[0.3em] text-cyan-600 sm:text-[10px] sm:tracking-[0.35em]">
               Intellect Studio / Digital Systems
             </p>
@@ -28,12 +43,12 @@ export default function HeroSection() {
             </h2>
           </div>
 
-          <div className="mt-8 max-w-2xl space-y-5 sm:mt-10">
+          <div ref={copyRef} className="mt-8 max-w-2xl space-y-5 sm:mt-10">
             <p className="max-w-xl text-sm leading-7 text-slate-600 sm:text-base lg:max-w-2xl">
               We design, build, and launch digital experiences that feel precise, calm, and unmistakably modern.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <div ref={actionsRef} className="flex flex-wrap items-center gap-3 sm:gap-4">
               <Button as="a" href="mailto:hello@intellectstudio.com" variant="secondary" size="md" magnetic>
                 Email Us
               </Button>
